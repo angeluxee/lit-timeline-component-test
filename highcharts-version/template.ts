@@ -55,14 +55,17 @@ function renderFilters(this: ObstetricTimelineHighcharts) {
 }
 
 /**
- * Renderiza la leyenda de tipos de eventos
+ * Renderiza la leyenda de tipos de eventos (clickeable para filtrar)
  */
 function renderLegend(this: ObstetricTimelineHighcharts) {
   return html`
     <div class="legend-container">
       ${Object.entries(EVENT_COLORS).map(
         ([type, color]) => html`
-          <div class="legend-item">
+          <div
+            class="legend-item ${this.activeFilters.has(type as any) ? 'active' : 'inactive'}"
+            @click=${() => this.toggleFilter(type as any)}
+          >
             <span class="legend-marker" style="background-color: ${color}"></span>
             <span class="legend-label">${EVENT_LABELS[type as keyof typeof EVENT_LABELS]}</span>
           </div>
@@ -122,7 +125,6 @@ export function template(this: ObstetricTimelineHighcharts) {
   return html`
     <div class="obstetric-timeline" @click=${() => this.closeOverlay()}>
       ${renderHeader.call(this)}
-      ${renderFilters.call(this)}
 
       <div class="chart-wrapper">
         ${renderLegend.call(this)}
