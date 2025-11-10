@@ -56,18 +56,22 @@ function renderFilters(this: ObstetricTimelineHighcharts) {
 
 /**
  * Renderiza la leyenda de tipos de eventos (clickeable para filtrar)
+ * Solo muestra eventos clínicos, no hitos únicos (parto/puerperio)
  */
 function renderLegend(this: ObstetricTimelineHighcharts) {
+  // Solo mostrar eventos clínicos recurrentes
+  const clinicalEventTypes = ['visita', 'prueba', 'urgencia', 'ingreso'] as const;
+
   return html`
     <div class="legend-container">
-      ${Object.entries(EVENT_COLORS).map(
-        ([type, color]) => html`
+      ${clinicalEventTypes.map(
+        (type) => html`
           <div
-            class="legend-item ${this.activeFilters.has(type as any) ? 'active' : 'inactive'}"
-            @click=${() => this.toggleFilter(type as any)}
+            class="legend-item ${this.activeFilters.has(type) ? 'active' : 'inactive'}"
+            @click=${() => this.toggleFilter(type)}
           >
-            <span class="legend-marker" style="background-color: ${color}"></span>
-            <span class="legend-label">${EVENT_LABELS[type as keyof typeof EVENT_LABELS]}</span>
+            <span class="legend-marker" style="background-color: ${EVENT_COLORS[type]}"></span>
+            <span class="legend-label">${EVENT_LABELS[type]}</span>
           </div>
         `
       )}

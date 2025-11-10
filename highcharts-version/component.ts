@@ -74,9 +74,9 @@ export class ObstetricTimelineHighcharts extends LitElement {
   @property({ type: Array })
   events: ObstetricEvent[] = [];
 
-  // Estado interno
+  // Estado interno - Solo eventos clínicos filtrables (parto y puerperio siempre visibles)
   @state()
-  private activeFilters: Set<EventType> = new Set(['visita', 'prueba', 'urgencia', 'ingreso', 'parto', 'puerperio']);
+  private activeFilters: Set<EventType> = new Set(['visita', 'prueba', 'urgencia', 'ingreso']);
 
   @state()
   private showHistorical: boolean = true;
@@ -112,10 +112,13 @@ export class ObstetricTimelineHighcharts extends LitElement {
 
   /**
    * Filtra eventos según los filtros activos
+   * Los eventos de parto y puerperio siempre se muestran (no filtrables)
    */
   get filteredEvents(): ObstetricEvent[] {
     return this.events.filter(event => {
-      const typeMatch = this.activeFilters.has(event.type);
+      // Parto y puerperio siempre visibles (hitos únicos)
+      const isAlwaysVisible = event.type === 'parto' || event.type === 'puerperio';
+      const typeMatch = isAlwaysVisible || this.activeFilters.has(event.type);
       const dateMatch = this.showHistorical || event.date <= this.today;
       return typeMatch && dateMatch;
     });
