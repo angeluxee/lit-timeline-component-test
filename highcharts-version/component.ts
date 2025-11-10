@@ -292,7 +292,7 @@ export class ObstetricTimelineHighcharts extends LitElement {
                 fontWeight: 'bold',
                 textOutline: 'none',
               },
-              y: 4,
+              y: 5,
             },
           };
         });
