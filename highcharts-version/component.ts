@@ -50,6 +50,18 @@ export const EVENT_LABELS: Record<EventType, string> = {
 };
 
 /**
+ * Posiciones Y fijas para cada tipo de evento (cada tipo en su propia fila)
+ */
+export const EVENT_Y_POSITIONS: Record<EventType, number> = {
+  visita: 5,
+  prueba: 4,
+  urgencia: 3,
+  ingreso: 2,
+  parto: 1,
+  puerperio: 0,
+};
+
+/**
  * Timeline Obstétrico Component con Highcharts
  */
 @customElement('obstetric-timeline-highcharts')
@@ -182,7 +194,7 @@ export class ObstetricTimelineHighcharts extends LitElement {
     this.filteredEvents.forEach(event => {
       eventsByType[event.type].push({
         x: event.week,
-        y: 0,
+        y: EVENT_Y_POSITIONS[event.type],
         name: event.title,
         description: event.description,
         date: this.formatDate(event.date),
@@ -226,7 +238,7 @@ export class ObstetricTimelineHighcharts extends LitElement {
     this.chart = Highcharts.chart(this.chartContainer, {
       chart: {
         type: 'scatter',
-        height: 300,
+        height: 400,
         backgroundColor: '#ffffff',
         spacing: [20, 20, 20, 20],
       },
@@ -316,9 +328,22 @@ export class ObstetricTimelineHighcharts extends LitElement {
         ],
       },
       yAxis: {
-        visible: false,
-        min: -2,
-        max: 2,
+        title: {
+          text: '',
+        },
+        min: -0.5,
+        max: 5.5,
+        tickInterval: 1,
+        categories: ['Puerperio', 'Parto', 'Ingreso', 'Urgencia', 'Prueba', 'Visita'],
+        gridLineWidth: 1,
+        gridLineColor: '#f0f0f0',
+        labels: {
+          style: {
+            color: '#2c3e50',
+            fontSize: '12px',
+            fontWeight: '600',
+          },
+        },
       },
       tooltip: {
         useHTML: true,
@@ -347,8 +372,8 @@ export class ObstetricTimelineHighcharts extends LitElement {
       plotOptions: {
         scatter: {
           jitter: {
-            x: 0.2,
-            y: 0.6,
+            x: 0.3,
+            y: 0,
           },
           marker: {
             states: {
