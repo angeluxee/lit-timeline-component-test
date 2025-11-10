@@ -74,9 +74,9 @@ export class ObstetricTimelineHighcharts extends LitElement {
   @property({ type: Array })
   events: ObstetricEvent[] = [];
 
-  // Estado interno
+  // Estado interno - Solo eventos clínicos filtrables (parto y puerperio siempre visibles)
   @state()
-  private activeFilters: Set<EventType> = new Set(['visita', 'prueba', 'urgencia', 'ingreso', 'parto', 'puerperio']);
+  private activeFilters: Set<EventType> = new Set(['visita', 'prueba', 'urgencia', 'ingreso']);
 
   @state()
   private showHistorical: boolean = true;
@@ -112,10 +112,13 @@ export class ObstetricTimelineHighcharts extends LitElement {
 
   /**
    * Filtra eventos según los filtros activos
+   * Los eventos de parto y puerperio siempre se muestran (no filtrables)
    */
   get filteredEvents(): ObstetricEvent[] {
     return this.events.filter(event => {
-      const typeMatch = this.activeFilters.has(event.type);
+      // Parto y puerperio siempre visibles (hitos únicos)
+      const isAlwaysVisible = event.type === 'parto' || event.type === 'puerperio';
+      const typeMatch = isAlwaysVisible || this.activeFilters.has(event.type);
       const dateMatch = this.showHistorical || event.date <= this.today;
       return typeMatch && dateMatch;
     });
@@ -266,9 +269,13 @@ export class ObstetricTimelineHighcharts extends LitElement {
             color: 'rgba(221, 160, 221, 0.2)',
             label: {
               text: 'Puerperio',
+              align: 'center',
+              verticalAlign: 'top',
+              y: -10,
               style: {
-                color: 'rgba(156, 39, 176, 0.8)',
+                color: 'rgba(156, 39, 176, 0.9)',
                 fontWeight: '600',
+                fontSize: '13px',
               },
             },
           },
@@ -341,7 +348,7 @@ export class ObstetricTimelineHighcharts extends LitElement {
         scatter: {
           jitter: {
             x: 0.2,
-            y: 0.3,
+            y: 0.6,
           },
           marker: {
             states: {
