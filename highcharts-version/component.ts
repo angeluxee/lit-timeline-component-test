@@ -26,15 +26,15 @@ export interface ObstetricEvent {
 }
 
 /**
- * Configuración de colores por tipo de evento
+ * Configuración de colores por tipo de evento (tonos pastel)
  */
 export const EVENT_COLORS: Record<EventType, string> = {
-  visita: '#2196F3',      // Azul
-  prueba: '#4CAF50',      // Verde
-  urgencia: '#F44336',    // Rojo
-  ingreso: '#FF9800',     // Naranja
-  parto: '#FFD700',       // Dorado
-  puerperio: '#CE93D8',   // Lila
+  visita: 'rgba(135, 206, 250, 0.7)',      // Azul cielo pastel
+  prueba: 'rgba(152, 251, 152, 0.7)',      // Verde pastel
+  urgencia: 'rgba(255, 182, 193, 0.7)',    // Rosa pastel
+  ingreso: 'rgba(255, 218, 185, 0.7)',     // Melocotón pastel
+  parto: 'rgba(255, 239, 153, 0.7)',       // Amarillo pastel
+  puerperio: 'rgba(221, 160, 221, 0.7)',   // Lila pastel
 };
 
 /**
@@ -186,9 +186,9 @@ export class ObstetricTimelineHighcharts extends LitElement {
         eventData: event,
         marker: {
           fillColor: EVENT_COLORS[event.type],
-          lineWidth: 3,
-          lineColor: '#ffffff',
-          radius: 8,
+          lineWidth: 2,
+          lineColor: 'rgba(255, 255, 255, 0.8)',
+          radius: 9,
         },
       });
     });
@@ -263,11 +263,11 @@ export class ObstetricTimelineHighcharts extends LitElement {
           {
             from: 41,
             to: 46,
-            color: 'rgba(206, 147, 216, 0.15)',
+            color: 'rgba(221, 160, 221, 0.2)',
             label: {
               text: 'Puerperio',
               style: {
-                color: '#9c27b0',
+                color: 'rgba(156, 39, 176, 0.8)',
                 fontWeight: '600',
               },
             },
@@ -276,14 +276,14 @@ export class ObstetricTimelineHighcharts extends LitElement {
         plotLines: [
           {
             value: this.todayWeek,
-            color: '#4a90e2',
+            color: 'rgba(135, 206, 250, 0.8)',
             width: 3,
             zIndex: 5,
             label: {
               text: 'Hoy',
               style: {
                 color: '#ffffff',
-                backgroundColor: '#4a90e2',
+                backgroundColor: 'rgba(135, 206, 250, 0.9)',
                 padding: '4px 8px',
                 borderRadius: '4px',
                 fontWeight: '600',
@@ -292,14 +292,14 @@ export class ObstetricTimelineHighcharts extends LitElement {
           },
           {
             value: 40,
-            color: '#ffd700',
+            color: 'rgba(255, 239, 153, 0.9)',
             width: 3,
             zIndex: 4,
             label: {
               text: 'Parto previsto',
               style: {
-                color: '#333',
-                backgroundColor: '#ffd700',
+                color: '#5a5a5a',
+                backgroundColor: 'rgba(255, 239, 153, 0.95)',
                 padding: '4px 8px',
                 borderRadius: '4px',
                 fontWeight: '600',

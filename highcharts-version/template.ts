@@ -123,9 +123,9 @@ export function template(this: ObstetricTimelineHighcharts) {
     <div class="obstetric-timeline" @click=${() => this.closeOverlay()}>
       ${renderHeader.call(this)}
       ${renderFilters.call(this)}
-      ${renderLegend.call(this)}
 
       <div class="chart-wrapper">
+        ${renderLegend.call(this)}
         <div id="chart-container" class="chart-container"></div>
       </div>
 
