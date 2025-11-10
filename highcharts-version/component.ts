@@ -165,7 +165,7 @@ export class ObstetricTimelineHighcharts extends LitElement {
   }
 
   /**
-   * Prepara los datos para Highcharts
+   * Prepara los datos para Highcharts con posiciones Y dinámicas
    */
   private prepareChartData() {
     const series: any[] = [];
@@ -180,39 +180,53 @@ export class ObstetricTimelineHighcharts extends LitElement {
 
     // Agrupar eventos por tipo
     this.filteredEvents.forEach(event => {
-      eventsByType[event.type].push({
+      if (!eventsByType[event.type]) {
+        eventsByType[event.type] = [];
+      }
+      eventsByType[event.type].push(event);
+    });
+
+    // Determinar qué tipos existen y asignarles posiciones Y dinámicas
+    // Orden de prioridad para las filas (de arriba a abajo)
+    const typeOrder: EventType[] = ['visita', 'prueba', 'urgencia', 'ingreso', 'parto', 'puerperio'];
+    const existingTypes = typeOrder.filter(type => eventsByType[type].length > 0);
+    const dynamicYPositions: Record<string, number> = {};
+
+    existingTypes.forEach((type, index) => {
+      dynamicYPositions[type] = existingTypes.length - 1 - index;
+    });
+
+    // Crear series para cada tipo de evento que existe
+    existingTypes.forEach(type => {
+      const yPosition = dynamicYPositions[type];
+      const data = eventsByType[type].map(event => ({
         x: event.week,
-        y: 0,
+        y: yPosition,
         name: event.title,
         description: event.description,
         date: this.formatDate(event.date),
         eventData: event,
         marker: {
-          fillColor: EVENT_COLORS[event.type],
+          fillColor: EVENT_COLORS[type],
           lineWidth: 2,
           lineColor: 'rgba(255, 255, 255, 0.8)',
           radius: 9,
         },
+      }));
+
+      series.push({
+        type: 'scatter',
+        name: EVENT_LABELS[type],
+        data: data,
+        color: EVENT_COLORS[type],
+        marker: {
+          symbol: 'circle',
+        },
+        cursor: 'pointer',
       });
     });
 
-    // Crear series para cada tipo de evento
-    Object.entries(eventsByType).forEach(([type, data]) => {
-      if (data.length > 0) {
-        series.push({
-          type: 'scatter',
-          name: EVENT_LABELS[type as EventType],
-          data: data,
-          color: EVENT_COLORS[type as EventType],
-          marker: {
-            symbol: 'circle',
-          },
-          cursor: 'pointer',
-        });
-      }
-    });
-
-    return series;
+    return { series, rowCount: existingTypes.length };
   }
 
   /**
@@ -222,11 +236,15 @@ export class ObstetricTimelineHighcharts extends LitElement {
     if (!this.chartContainer) return;
 
     const self = this;
+    const { series, rowCount } = this.prepareChartData();
+
+    // Calcular altura dinámica: 80px base + 60px por fila
+    const dynamicHeight = Math.max(250, 80 + rowCount * 60);
 
     this.chart = Highcharts.chart(this.chartContainer, {
       chart: {
         type: 'scatter',
-        height: 300,
+        height: dynamicHeight,
         backgroundColor: '#ffffff',
         spacing: [20, 20, 20, 20],
       },
@@ -316,9 +334,16 @@ export class ObstetricTimelineHighcharts extends LitElement {
         ],
       },
       yAxis: {
-        visible: false,
-        min: -2,
-        max: 2,
+        title: {
+          text: '',
+        },
+        min: -0.5,
+        max: rowCount - 0.5,
+        gridLineWidth: 1,
+        gridLineColor: '#f0f0f0',
+        labels: {
+          enabled: false,
+        },
       },
       tooltip: {
         useHTML: true,
@@ -347,8 +372,8 @@ export class ObstetricTimelineHighcharts extends LitElement {
       plotOptions: {
         scatter: {
           jitter: {
-            x: 0.2,
-            y: 0.6,
+            x: 0.3,
+            y: 0,
           },
           marker: {
             states: {
@@ -377,7 +402,7 @@ export class ObstetricTimelineHighcharts extends LitElement {
           },
         },
       },
-      series: this.prepareChartData(),
+      series: series,
     } as any);
   }
 
@@ -386,7 +411,17 @@ export class ObstetricTimelineHighcharts extends LitElement {
    */
   private updateChart() {
     if (this.chart) {
-      const series = this.prepareChartData();
+      const { series, rowCount } = this.prepareChartData();
+
+      // Actualizar altura del gráfico dinámicamente
+      const dynamicHeight = Math.max(250, 80 + rowCount * 60);
+      this.chart.setSize(undefined, dynamicHeight, false);
+
+      // Actualizar el eje Y con el nuevo rango
+      this.chart.yAxis[0].update({
+        min: -0.5,
+        max: rowCount - 0.5,
+      }, false);
 
       // Remover series existentes
       while (this.chart.series.length > 0) {
