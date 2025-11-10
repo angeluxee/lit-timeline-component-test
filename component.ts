@@ -1,7 +1,7 @@
-import { LitElement, html } from 'lit';
+import { LitElement, html, css, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { template } from './template.js';
-import styles from './styles.scss';
+import stylesText from './styles.scss?inline';
 
 /**
  * Tipos de eventos obstétricos
@@ -59,7 +59,7 @@ export const EVENT_LABELS: Record<EventType, string> = {
  */
 @customElement('obstetric-timeline')
 export class ObstetricTimeline extends LitElement {
-  static styles = styles;
+  static styles = unsafeCSS(stylesText);
 
   // Propiedades públicas
   @property({ type: Object })
