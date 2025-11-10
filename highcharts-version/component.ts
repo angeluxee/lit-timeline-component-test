@@ -165,7 +165,7 @@ export class ObstetricTimelineHighcharts extends LitElement {
   }
 
   /**
-   * Prepara los datos para Highcharts con posiciones Y dinámicas
+   * Prepara los datos para Highcharts con posiciones Y dinámicas y agrupación
    */
   private prepareChartData() {
     const series: any[] = [];
@@ -199,20 +199,52 @@ export class ObstetricTimelineHighcharts extends LitElement {
     // Crear series para cada tipo de evento que existe
     existingTypes.forEach(type => {
       const yPosition = dynamicYPositions[type];
-      const data = eventsByType[type].map(event => ({
-        x: event.week,
-        y: yPosition,
-        name: event.title,
-        description: event.description,
-        date: this.formatDate(event.date),
-        eventData: event,
-        marker: {
-          fillColor: EVENT_COLORS[type],
-          lineWidth: 2,
-          lineColor: 'rgba(255, 255, 255, 0.8)',
-          radius: 9,
-        },
-      }));
+
+      // Agrupar eventos del mismo tipo por semana
+      const eventsByWeek: Record<number, ObstetricEvent[]> = {};
+      eventsByType[type].forEach(event => {
+        if (!eventsByWeek[event.week]) {
+          eventsByWeek[event.week] = [];
+        }
+        eventsByWeek[event.week].push(event);
+      });
+
+      // Crear puntos agrupados
+      const data = Object.entries(eventsByWeek).map(([week, events]) => {
+        const weekNum = parseInt(week);
+        const isGrouped = events.length > 1;
+
+        return {
+          x: weekNum,
+          y: yPosition,
+          name: isGrouped ? `${events.length} eventos` : events[0].title,
+          description: isGrouped
+            ? events.map(e => e.title).join(', ')
+            : events[0].description,
+          date: this.formatDate(events[0].date),
+          eventData: events[0],
+          groupedEvents: events, // Almacenar todos los eventos del grupo
+          isGrouped: isGrouped,
+          count: events.length,
+          marker: {
+            fillColor: EVENT_COLORS[type],
+            lineWidth: 2,
+            lineColor: 'rgba(255, 255, 255, 0.8)',
+            radius: isGrouped ? 12 : 9, // Marcador más grande si está agrupado
+          },
+          dataLabels: {
+            enabled: isGrouped,
+            format: '{point.count}',
+            style: {
+              color: '#ffffff',
+              fontSize: '11px',
+              fontWeight: 'bold',
+              textOutline: 'none',
+            },
+            y: 1,
+          },
+        };
+      });
 
       series.push({
         type: 'scatter',
@@ -223,6 +255,9 @@ export class ObstetricTimelineHighcharts extends LitElement {
           symbol: 'circle',
         },
         cursor: 'pointer',
+        dataLabels: {
+          enabled: true,
+        },
       });
     });
 
@@ -354,25 +389,57 @@ export class ObstetricTimelineHighcharts extends LitElement {
         shadow: true,
         formatter: function () {
           const point: any = this.point;
-          return `
-            <div style="min-width: 200px;">
-              <div style="background: ${point.marker.fillColor}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase;">
-                ${this.series.name}
+
+          if (point.isGrouped && point.groupedEvents) {
+            // Tooltip para eventos agrupados
+            const eventsList = point.groupedEvents
+              .map((event: ObstetricEvent) => `
+                <div style="padding: 4px 0; border-bottom: 1px solid #f0f0f0;">
+                  <div style="font-weight: 600; color: #2c3e50; font-size: 12px;">
+                    ${event.title}
+                  </div>
+                  <div style="color: #7b8a9a; font-size: 11px;">
+                    ${self.formatDate(event.date)}
+                  </div>
+                </div>
+              `)
+              .join('');
+
+            return `
+              <div style="min-width: 220px; max-width: 300px;">
+                <div style="background: ${point.marker.fillColor}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase;">
+                  ${this.series.name} - Semana ${point.x}
+                </div>
+                <div style="font-weight: 600; color: #2c3e50; margin-bottom: 8px; font-size: 13px;">
+                  ${point.count} eventos
+                </div>
+                <div style="max-height: 200px; overflow-y: auto;">
+                  ${eventsList}
+                </div>
               </div>
-              <div style="font-weight: 600; color: #2c3e50; margin-bottom: 4px;">
-                ${point.name}
+            `;
+          } else {
+            // Tooltip para evento individual
+            return `
+              <div style="min-width: 200px;">
+                <div style="background: ${point.marker.fillColor}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase;">
+                  ${this.series.name}
+                </div>
+                <div style="font-weight: 600; color: #2c3e50; margin-bottom: 4px;">
+                  ${point.name}
+                </div>
+                <div style="color: #7b8a9a; font-size: 12px;">
+                  Semana ${point.x} - ${point.date}
+                </div>
               </div>
-              <div style="color: #7b8a9a; font-size: 12px;">
-                Semana ${point.x} - ${point.date}
-              </div>
-            </div>
-          `;
+            `;
+          }
         },
       },
       plotOptions: {
         scatter: {
           jitter: {
-            x: 0.3,
+            x: 0,
             y: 0,
           },
           marker: {
