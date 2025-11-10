@@ -271,7 +271,7 @@ export class ObstetricTimelineHighcharts extends LitElement {
               text: 'Puerperio',
               align: 'center',
               verticalAlign: 'top',
-              y: 5,
+              y: -10,
               style: {
                 color: 'rgba(156, 39, 176, 0.9)',
                 fontWeight: '600',
