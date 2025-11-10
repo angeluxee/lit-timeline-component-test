@@ -348,7 +348,7 @@ export class ObstetricTimelineHighcharts extends LitElement {
         scatter: {
           jitter: {
             x: 0.2,
-            y: 0.3,
+            y: 0.6,
           },
           marker: {
             states: {
