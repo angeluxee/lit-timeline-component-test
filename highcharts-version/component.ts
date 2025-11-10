@@ -240,7 +240,7 @@ export class ObstetricTimelineHighcharts extends LitElement {
           name: EVENT_LABELS[type],
           data: rangeData,
           borderRadius: 4,
-          pointWidth: 8,
+          pointWidth: 18,
           color: EVENT_COLORS[type],
           cursor: 'pointer',
           dataLabels: {
