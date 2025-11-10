@@ -2,11 +2,13 @@ import { LitElement, html, css, unsafeCSS } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators.js';
 import * as Highcharts from 'highcharts';
 import HighchartsMore from 'highcharts/highcharts-more';
+import HighchartsXRange from 'highcharts/modules/xrange';
 import { template } from './template.js';
 import stylesText from './styles.scss?inline';
 
 // Inicializar módulos de Highcharts
 HighchartsMore(Highcharts);
+HighchartsXRange(Highcharts);
 
 /**
  * Tipos de eventos obstétricos
@@ -20,9 +22,11 @@ export interface ObstetricEvent {
   id: string;
   type: EventType;
   date: Date;
+  endDate?: Date; // Fecha de fin para eventos con duración (ej: ingresos)
   title: string;
   description: string;
   week: number;
+  weekEnd?: number; // Semana de fin para eventos con duración
 }
 
 /**
@@ -196,69 +200,117 @@ export class ObstetricTimelineHighcharts extends LitElement {
       dynamicYPositions[type] = existingTypes.length - 1 - index;
     });
 
+    const self = this;
+
     // Crear series para cada tipo de evento que existe
     existingTypes.forEach(type => {
       const yPosition = dynamicYPositions[type];
 
-      // Agrupar eventos del mismo tipo por semana
-      const eventsByWeek: Record<number, ObstetricEvent[]> = {};
+      // Separar eventos con duración de eventos puntuales
+      const eventsWithDuration: ObstetricEvent[] = [];
+      const pointEvents: ObstetricEvent[] = [];
+
       eventsByType[type].forEach(event => {
-        if (!eventsByWeek[event.week]) {
-          eventsByWeek[event.week] = [];
+        if (event.weekEnd && event.weekEnd > event.week) {
+          eventsWithDuration.push(event);
+        } else {
+          pointEvents.push(event);
         }
-        eventsByWeek[event.week].push(event);
       });
 
-      // Crear puntos agrupados
-      const data = Object.entries(eventsByWeek).map(([week, events]) => {
-        const weekNum = parseInt(week);
-        const isGrouped = events.length > 1;
-
-        return {
-          x: weekNum,
+      // Serie de líneas horizontales para eventos con duración (xrange)
+      if (eventsWithDuration.length > 0) {
+        const rangeData = eventsWithDuration.map(event => ({
+          x: event.week,
+          x2: event.weekEnd,
           y: yPosition,
-          name: isGrouped ? `${events.length} eventos` : events[0].title,
-          description: isGrouped
-            ? events.map(e => e.title).join(', ')
-            : events[0].description,
-          date: this.formatDate(events[0].date),
-          eventData: events[0],
-          groupedEvents: events, // Almacenar todos los eventos del grupo
-          isGrouped: isGrouped,
-          count: events.length,
-          marker: {
-            fillColor: EVENT_COLORS[type],
-            lineWidth: 2,
-            lineColor: 'rgba(255, 255, 255, 0.8)',
-            radius: isGrouped ? 12 : 9, // Marcador más grande si está agrupado
-          },
+          name: event.title,
+          description: event.description,
+          date: this.formatDate(event.date),
+          endDate: event.endDate ? this.formatDate(event.endDate) : '',
+          eventData: event,
+          color: EVENT_COLORS[type],
           dataLabels: {
-            enabled: isGrouped,
-            format: '{point.count}',
-            style: {
-              color: '#ffffff',
-              fontSize: '11px',
-              fontWeight: 'bold',
-              textOutline: 'none',
-            },
-            y: 1,
+            enabled: false,
           },
-        };
-      });
+        }));
 
-      series.push({
-        type: 'scatter',
-        name: EVENT_LABELS[type],
-        data: data,
-        color: EVENT_COLORS[type],
-        marker: {
-          symbol: 'circle',
-        },
-        cursor: 'pointer',
-        dataLabels: {
-          enabled: true,
-        },
-      });
+        series.push({
+          type: 'xrange',
+          name: EVENT_LABELS[type],
+          data: rangeData,
+          borderRadius: 4,
+          pointWidth: 8,
+          color: EVENT_COLORS[type],
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: false,
+          },
+        });
+      }
+
+      // Serie de puntos para eventos puntuales (scatter)
+      if (pointEvents.length > 0) {
+        // Agrupar eventos puntuales por semana
+        const eventsByWeek: Record<number, ObstetricEvent[]> = {};
+        pointEvents.forEach(event => {
+          if (!eventsByWeek[event.week]) {
+            eventsByWeek[event.week] = [];
+          }
+          eventsByWeek[event.week].push(event);
+        });
+
+        // Crear puntos agrupados
+        const data = Object.entries(eventsByWeek).map(([week, events]) => {
+          const weekNum = parseInt(week);
+          const isGrouped = events.length > 1;
+
+          return {
+            x: weekNum,
+            y: yPosition,
+            name: isGrouped ? `${events.length} eventos` : events[0].title,
+            description: isGrouped
+              ? events.map(e => e.title).join(', ')
+              : events[0].description,
+            date: this.formatDate(events[0].date),
+            eventData: events[0],
+            groupedEvents: events, // Almacenar todos los eventos del grupo
+            isGrouped: isGrouped,
+            count: events.length,
+            marker: {
+              fillColor: EVENT_COLORS[type],
+              lineWidth: 2,
+              lineColor: 'rgba(255, 255, 255, 0.8)',
+              radius: isGrouped ? 12 : 9, // Marcador más grande si está agrupado
+            },
+            dataLabels: {
+              enabled: isGrouped,
+              format: '{point.count}',
+              style: {
+                color: '#ffffff',
+                fontSize: '11px',
+                fontWeight: 'bold',
+                textOutline: 'none',
+              },
+              y: 4,
+            },
+          };
+        });
+
+        series.push({
+          type: 'scatter',
+          name: EVENT_LABELS[type],
+          data: data,
+          color: EVENT_COLORS[type],
+          marker: {
+            symbol: 'circle',
+          },
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: true,
+          },
+        });
+      }
     });
 
     return { series, rowCount: existingTypes.length };
@@ -390,6 +442,26 @@ export class ObstetricTimelineHighcharts extends LitElement {
         formatter: function () {
           const point: any = this.point;
 
+          // Tooltip para eventos con duración (xrange)
+          if (this.series.type === 'xrange') {
+            return `
+              <div style="min-width: 200px;">
+                <div style="background: ${point.color}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase;">
+                  ${this.series.name}
+                </div>
+                <div style="font-weight: 600; color: #2c3e50; margin-bottom: 4px;">
+                  ${point.name}
+                </div>
+                <div style="color: #7b8a9a; font-size: 12px; margin-bottom: 4px;">
+                  <strong>Inicio:</strong> Semana ${point.x} - ${point.date}
+                </div>
+                <div style="color: #7b8a9a; font-size: 12px;">
+                  <strong>Fin:</strong> Semana ${point.x2} - ${point.endDate}
+                </div>
+              </div>
+            `;
+          }
+
           if (point.isGrouped && point.groupedEvents) {
             // Tooltip para eventos agrupados
             const eventsList = point.groupedEvents
@@ -452,6 +524,23 @@ export class ObstetricTimelineHighcharts extends LitElement {
               },
             },
           },
+          point: {
+            events: {
+              click: function (e: any) {
+                const eventData = (this as any).options.eventData;
+                if (eventData) {
+                  self.selectedEvent = eventData;
+                  self.overlayPosition = {
+                    x: e.pageX,
+                    y: e.pageY,
+                  };
+                  self.requestUpdate();
+                }
+              },
+            },
+          },
+        },
+        xrange: {
           point: {
             events: {
               click: function (e: any) {
