@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timeline Obstétrico - Highcharts Version</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: #ffffff;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+  </style>
+
+  <!-- Importar el componente TypeScript (Vite lo compilará) -->
+  <script type="module" src="/component.ts"></script>
+</head>
+<body>
+  <div class="container">
+    <!-- Componente de Timeline Obstétrico -->
+    <obstetric-timeline-highcharts id="timeline"></obstetric-timeline-highcharts>
+  </div>
+
+  <script type="module">
+    // Datos de ejemplo para el timeline
+    const generateSampleEvents = () => {
+      const startDate = new Date('2025-02-12');
+
+      const calculateDate = (weeks) => {
+        const date = new Date(startDate);
+        date.setDate(date.getDate() + (weeks * 7));
+        return date;
+      };
+
+      return [
+        // Visitas
+        {
+          id: 'v1',
+          type: 'visita',
+          date: calculateDate(4),
+          week: 4,
+          title: 'Primera visita prenatal',
+          description: 'Confirmación de embarazo, analítica básica y ultrasonido inicial.'
+        },
+        {
+          id: 'v2',
+          type: 'visita',
+          date: calculateDate(8),
+          week: 8,
+          title: 'Control prenatal',
+          description: 'Seguimiento del desarrollo fetal y mediciones ecográficas.'
+        },
+        {
+          id: 'v3',
+          type: 'visita',
+          date: calculateDate(12),
+          week: 12,
+          title: 'Ecografía del primer trimestre',
+          description: 'Evaluación del crecimiento fetal y marcadores genéticos.'
+        },
+        {
+          id: 'v4',
+          type: 'visita',
+          date: calculateDate(20),
+          week: 20,
+          title: 'Ecografía morfológica',
+          description: 'Revisión detallada de órganos y estructuras fetales.'
+        },
+        {
+          id: 'v5',
+          type: 'visita',
+          date: calculateDate(28),
+          week: 28,
+          title: 'Control tercer trimestre',
+          description: 'Monitorización del bienestar fetal y preparación al parto.'
+        },
+        {
+          id: 'v6',
+          type: 'visita',
+          date: calculateDate(36),
+          week: 36,
+          title: 'Visita preparto',
+          description: 'Evaluación de la presentación fetal y plan de parto.'
+        },
+
+        // Pruebas
+        {
+          id: 'p1',
+          type: 'prueba',
+          date: calculateDate(6),
+          week: 6,
+          title: 'Analítica completa',
+          description: 'Hemograma, bioquímica, grupo sanguíneo y serologías.'
+        },
+        {
+          id: 'p2',
+          type: 'prueba',
+          date: calculateDate(12),
+          week: 12,
+          title: 'Cribado combinado',
+          description: 'Test de cribado de cromosomopatías del primer trimestre.'
+        },
+        {
+          id: 'p3',
+          type: 'prueba',
+          date: calculateDate(24),
+          week: 24,
+          title: 'Test de O\'Sullivan',
+          description: 'Prueba de detección de diabetes gestacional.'
+        },
+        {
+          id: 'p4',
+          type: 'prueba',
+          date: calculateDate(35),
+          week: 35,
+          title: 'Cultivo estreptococo',
+          description: 'Detección de estreptococo grupo B vagino-rectal.'
+        },
+
+        // Urgencias
+        {
+          id: 'u1',
+          type: 'urgencia',
+          date: calculateDate(16),
+          week: 16,
+          title: 'Consulta urgente',
+          description: 'Acudió por dolor abdominal leve, descartada patología.'
+        },
+
+        // Ingresos
+        {
+          id: 'i1',
+          type: 'ingreso',
+          date: calculateDate(32),
+          week: 32,
+          title: 'Ingreso por amenaza de parto prematuro',
+          description: 'Ingreso de 48h para maduración pulmonar y reposo.'
+        },
+
+        // Eventos agrupados en semana 12 (para probar visualización)
+        {
+          id: 'e1',
+          type: 'prueba',
+          date: calculateDate(12),
+          week: 12,
+          title: 'NIPT (ADN fetal)',
+          description: 'Test prenatal no invasivo de ADN fetal en sangre materna.'
+        },
+
+        // Eventos agrupados en semana 20
+        {
+          id: 'e2',
+          type: 'prueba',
+          date: calculateDate(20),
+          week: 20,
+          title: 'Ecocardiografía fetal',
+          description: 'Estudio especializado del corazón fetal.'
+        },
+        {
+          id: 'e3',
+          type: 'visita',
+          date: calculateDate(20),
+          week: 20,
+          title: 'Consulta nutrición',
+          description: 'Valoración nutricional y recomendaciones dietéticas.'
+        },
+        {
+          id: 'e4',
+          type: 'prueba',
+          date: calculateDate(20),
+          week: 20,
+          title: 'Analítica segundo trimestre',
+          description: 'Control de hemoglobina y función renal.'
+        },
+
+        // Parto previsto
+        {
+          id: 'parto1',
+          type: 'parto',
+          date: calculateDate(40),
+          week: 40,
+          title: 'Parto previsto',
+          description: 'Fecha estimada de parto según fecha de última regla.'
+        },
+      ];
+    };
+
+    // Configurar el componente cuando esté disponible
+    window.addEventListener('DOMContentLoaded', () => {
+      const timeline = document.getElementById('timeline');
+
+      if (timeline) {
+        // Configurar propiedades
+        timeline.startDate = new Date('2025-02-12');
+        timeline.expectedDeliveryDate = new Date('2025-11-20');
+        timeline.currentWeek = 16;
+        timeline.events = generateSampleEvents();
+
+        console.log('Timeline con Highcharts configurado');
+        console.log('Eventos totales:', timeline.events.length);
+      }
+    });
+  </script>
+</body>
+</html>

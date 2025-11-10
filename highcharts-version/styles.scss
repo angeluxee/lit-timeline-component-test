@@ -1,0 +1,389 @@
+/**
+ * Estilos para Timeline Obstétrico con Highcharts
+ * Diseño limpio, profesional y de estilo sanitario
+ */
+
+:host {
+  display: block;
+  font-family: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  color: #2c3e50;
+  background-color: #f8f9fa;
+  --color-primary: #4a90e2;
+  --color-secondary: #7b8a9a;
+  --color-success: #4caf50;
+  --color-danger: #f44336;
+  --color-warning: #ff9800;
+  --color-gold: #ffd700;
+  --color-purple: #ce93d8;
+  --color-bg-white: #ffffff;
+  --color-bg-light: #f8f9fa;
+  --color-border: #e1e8ed;
+  --color-text-primary: #2c3e50;
+  --color-text-secondary: #7b8a9a;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+// Contenedor principal
+.obstetric-timeline {
+  padding: 2rem;
+  background: var(--color-bg-white);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  min-height: 600px;
+}
+
+// ========================================
+// ENCABEZADO
+// ========================================
+
+.timeline-header {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.timeline-title {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1.3;
+
+  .timeline-dates {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: var(--color-text-secondary);
+    margin-top: 0.5rem;
+  }
+}
+
+// ========================================
+// BARRA DE FILTROS
+// ========================================
+
+.filter-bar {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--color-bg-white);
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+
+  .filter-checkbox {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  &:hover {
+    border-color: var(--color-primary);
+    background: rgba(74, 144, 226, 0.05);
+  }
+
+  &.active {
+    border-color: var(--filter-color, var(--color-primary));
+    background: rgba(74, 144, 226, 0.1);
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+}
+
+// ========================================
+// LEYENDA (CLICKEABLE)
+// ========================================
+
+.legend-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0;
+  min-width: 120px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  user-select: none;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  &.active {
+    .legend-marker {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .legend-label {
+      color: var(--color-text-primary);
+      font-weight: 500;
+    }
+  }
+
+  &.inactive {
+    .legend-marker {
+      opacity: 0.3;
+      transform: scale(0.85);
+    }
+
+    .legend-label {
+      color: var(--color-text-secondary);
+      opacity: 0.5;
+      text-decoration: line-through;
+    }
+  }
+}
+
+.legend-marker {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.legend-label {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+// ========================================
+// CONTENEDOR DEL CHART
+// ========================================
+
+.chart-wrapper {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  margin-top: 2rem;
+  background: var(--color-bg-white);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.chart-container {
+  flex: 1;
+  min-height: 300px;
+}
+
+// ========================================
+// OVERLAY
+// ========================================
+
+.overlay-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.event-overlay {
+  position: fixed;
+  background: var(--color-bg-white);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  min-width: 350px;
+  max-width: 500px;
+  transform: translate(-50%, -100%) translateY(-20px);
+  z-index: 1001;
+  animation: slideIn 0.3s ease;
+  border-top: 4px solid var(--event-color, var(--color-primary));
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -100%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -100%) translateY(-20px);
+  }
+}
+
+.overlay-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--color-text-primary);
+  }
+}
+
+.overlay-header {
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.overlay-type {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.overlay-date {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.overlay-content {
+  padding: 1.5rem;
+}
+
+.overlay-title {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1.4;
+}
+
+.overlay-description {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.overlay-actions {
+  padding: 1rem 1.5rem 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+
+  &:hover {
+    background: #3a7bc8;
+    box-shadow: var(--shadow-md);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+// ========================================
+// RESPONSIVE
+// ========================================
+
+@media (max-width: 768px) {
+  .obstetric-timeline {
+    padding: 1rem;
+  }
+
+  .chart-wrapper {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+
+  .legend-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    min-width: auto;
+  }
+
+  .event-overlay {
+    min-width: 90vw;
+    max-width: 90vw;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+
+  .filter-bar {
+    gap: 0.5rem;
+  }
+
+  .filter-button {
+    font-size: 0.8125rem;
+    padding: 0.4rem 0.75rem;
+  }
+}
+
+// ========================================
+// ESTILOS PARA HIGHCHARTS (override)
+// ========================================
+
+.chart-container {
+  // Asegurar que Highcharts use la fuente correcta
+  .highcharts-root {
+    font-family: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif !important;
+  }
+
+  .highcharts-tooltip {
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  }
+}
