@@ -39,13 +39,8 @@
     }
   </style>
 
-  <!-- Importar Lit desde CDN para desarrollo -->
-  <script type="module">
-    // Nota: En producción, compila TypeScript y usa un bundler
-    import { LitElement, html, css } from 'https://cdn.jsdelivr.net/gh/lit/dist@3/core/lit-core.min.js';
-
-    console.log('Timeline Obstétrico cargado. Implementar componente con TypeScript + bundler para producción.');
-  </script>
+  <!-- Importar el componente TypeScript (Vite lo compilará) -->
+  <script type="module" src="/component.ts"></script>
 </head>
 <body>
   <div class="container">
