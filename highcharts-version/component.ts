@@ -243,6 +243,7 @@ export class ObstetricTimelineHighcharts extends LitElement {
           pointWidth: 18,
           color: EVENT_COLORS[type],
           cursor: 'pointer',
+          stickyTracking: false,
           dataLabels: {
             enabled: false,
           },
@@ -306,6 +307,7 @@ export class ObstetricTimelineHighcharts extends LitElement {
             symbol: 'circle',
           },
           cursor: 'pointer',
+          stickyTracking: false,
           dataLabels: {
             enabled: true,
           },
@@ -347,7 +349,7 @@ export class ObstetricTimelineHighcharts extends LitElement {
       xAxis: {
         min: 0,
         max: 46,
-        tickInterval: 4,
+        tickInterval: 1,
         gridLineWidth: 1,
         gridLineColor: '#e1e8ed',
         lineColor: '#e1e8ed',
@@ -439,6 +441,8 @@ export class ObstetricTimelineHighcharts extends LitElement {
         borderRadius: 8,
         padding: 12,
         shadow: true,
+        shared: false,
+        snap: 0,
         formatter: function () {
           const point: any = this.point;
 
