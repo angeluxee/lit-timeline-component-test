@@ -347,7 +347,7 @@ export class ObstetricTimelineHighcharts extends LitElement {
       xAxis: {
         min: 0,
         max: 46,
-        tickInterval: 4,
+        tickInterval: 1,
         gridLineWidth: 1,
         gridLineColor: '#e1e8ed',
         lineColor: '#e1e8ed',
