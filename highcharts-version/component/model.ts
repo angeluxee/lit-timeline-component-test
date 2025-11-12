@@ -172,7 +172,7 @@ export function createChartConfig(options: CreateChartOptions): Highcharts.Optio
       lineColor: '#e1e8ed',
       tickColor: '#e1e8ed',
       title: {
-        text: 'Semanas de gestación',
+        text: 'Setmanes de gestació',
         style: { color: '#7b8a9a', fontSize: '13px', fontWeight: '600' },
       },
       labels: {
@@ -197,7 +197,7 @@ export function createChartConfig(options: CreateChartOptions): Highcharts.Optio
           width: 3,
           zIndex: 5,
           label: {
-            text: 'Hoy',
+            text: 'Avui',
             style: {
               color: '#fff',
               backgroundColor: 'rgba(135, 206, 250, 0.9)',
@@ -213,7 +213,7 @@ export function createChartConfig(options: CreateChartOptions): Highcharts.Optio
           width: 3,
           zIndex: 4,
           label: {
-            text: 'Parto previsto',
+            text: 'Part previst',
             style: {
               color: '#5a5a5a',
               backgroundColor: 'rgba(255, 239, 153, 0.95)',
