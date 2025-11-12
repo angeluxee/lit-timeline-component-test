@@ -195,11 +195,11 @@ export function createChartConfig(options: CreateChartOptions): Highcharts.Optio
           value: todayWeek,
           color: 'rgba(135, 206, 250, 0.8)',
           width: 3,
-          zIndex: 5,
+          zIndex: 4,
           label: {
             text: 'Avui',
             style: {
-              color: '#fff',
+              color: '#5a5a5a',
               backgroundColor: 'rgba(135, 206, 250, 0.9)',
               padding: '4px 8px',
               borderRadius: '4px',
