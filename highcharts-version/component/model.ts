@@ -126,7 +126,7 @@ export function prepareChartData(options: PrepareChartDataOptions): ChartDataRes
             enabled: evs.length > 1,
             format: '{point.count}',
             style: { color: '#fff', fontSize: '11px', fontWeight: 'bold', textOutline: 'none' },
-            y: 5,
+            y: 10,
           },
         })),
         color,
