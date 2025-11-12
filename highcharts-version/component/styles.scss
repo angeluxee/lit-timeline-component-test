@@ -134,8 +134,49 @@
 }
 
 // ========================================
-// LEYENDA (CLICKEABLE)
+// LEYENDAS
 // ========================================
+
+.legends-group {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.legend-separator {
+  width: 1px;
+  height: 24px;
+  background: var(--color-border);
+  flex-shrink: 0;
+}
+
+.line-legend {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+}
+
+.line-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.line-legend-marker {
+  width: 20px;
+  height: 3px;
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+.line-legend-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
 
 .legend-container {
   display: flex;
@@ -223,45 +264,6 @@
 .chart-container {
   min-height: 300px;
   padding: 1rem 1.5rem;
-}
-
-// ========================================
-// LEYENDA DE LÍNEAS
-// ========================================
-
-.line-legend {
-  position: absolute;
-  top: 2rem;
-  right: 2.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 0.75rem;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--color-border);
-  z-index: 10;
-}
-
-.line-legend-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.line-legend-marker {
-  width: 20px;
-  height: 3px;
-  border-radius: 1px;
-  flex-shrink: 0;
-}
-
-.line-legend-label {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--color-text-primary);
-  white-space: nowrap;
 }
 
 // ========================================
@@ -425,6 +427,17 @@
     width: 100%;
   }
 
+  .legends-group {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .legend-separator {
+    display: none;
+  }
+
   .legend-container {
     width: 100%;
     justify-content: flex-start;
@@ -436,13 +449,6 @@
 
   .chart-container {
     padding: 0.5rem 1rem;
-  }
-
-  .line-legend {
-    top: 1rem;
-    right: 1.5rem;
-    padding: 0.5rem;
-    font-size: 0.7rem;
   }
 
   .event-overlay {
