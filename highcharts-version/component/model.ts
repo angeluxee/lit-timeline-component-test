@@ -252,8 +252,8 @@ export function createChartConfig(options: CreateChartOptions): Highcharts.Optio
                 ${this.series.name}
               </div>
               <div style="font-weight: 600; color: #2c3e50; margin-bottom: 4px;">${p.name}</div>
-              <div style="color: #7b8a9a; font-size: 12px; margin-bottom: 4px;"><strong>Inicio:</strong> Semana ${p.x} - ${p.date}</div>
-              <div style="color: #7b8a9a; font-size: 12px;"><strong>Fin:</strong> Semana ${p.x2} - ${p.endDate}</div>
+              <div style="color: #7b8a9a; font-size: 12px; margin-bottom: 4px;"><strong>Inici:</strong> Setmana ${p.x} - ${p.date}</div>
+              <div style="color: #7b8a9a; font-size: 12px;"><strong>Fi:</strong> Setmana ${p.x2} - ${p.endDate}</div>
             </div>
           `;
         }
@@ -269,9 +269,9 @@ export function createChartConfig(options: CreateChartOptions): Highcharts.Optio
           return `
             <div style="min-width: 220px; max-width: 300px;">
               <div style="background: ${p.marker.fillColor}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase;">
-                ${this.series.name} - Semana ${p.x}
+                ${this.series.name} - Setmana ${p.x}
               </div>
-              <div style="font-weight: 600; color: #2c3e50; margin-bottom: 8px; font-size: 13px;">${p.count} eventos</div>
+              <div style="font-weight: 600; color: #2c3e50; margin-bottom: 8px; font-size: 13px;">${p.count} esdeveniments</div>
               <div style="max-height: 200px; overflow-y: auto;">${list}</div>
             </div>
           `;
@@ -283,7 +283,7 @@ export function createChartConfig(options: CreateChartOptions): Highcharts.Optio
               ${this.series.name}
             </div>
             <div style="font-weight: 600; color: #2c3e50; margin-bottom: 4px;">${p.name}</div>
-            <div style="color: #7b8a9a; font-size: 12px;">Semana ${p.x} - ${p.date}</div>
+            <div style="color: #7b8a9a; font-size: 12px;">Setmana ${p.x} - ${p.date}</div>
           </div>
         `;
       },
