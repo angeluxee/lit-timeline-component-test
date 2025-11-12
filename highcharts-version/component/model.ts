@@ -197,13 +197,14 @@ export function createChartConfig(options: CreateChartOptions): Highcharts.Optio
           width: 3,
           zIndex: 5,
           label: {
-            text: 'Avui',
+            text: `Avui · Setmana ${todayWeek}`,
             style: {
               color: '#fff',
               backgroundColor: 'rgba(135, 206, 250, 0.9)',
-              padding: '4px 8px',
+              padding: '6px 10px',
               borderRadius: '4px',
               fontWeight: '600',
+              fontSize: '12px',
             },
           },
         },
