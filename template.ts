@@ -32,7 +32,7 @@ function renderFilters(this: ObstetricTimeline) {
   return html`
     <div class="filter-bar">
       ${filterButtons.map(
-        ({ type, label }) => html`
+    ({ type, label }) => html`
           <button
             class="filter-button ${this.activeFilters.has(type) ? 'active' : ''}"
             @click=${() => this.toggleFilter(type)}
@@ -42,7 +42,7 @@ function renderFilters(this: ObstetricTimeline) {
             ${label}
           </button>
         `
-      )}
+  )}
       <button
         class="filter-button ${this.showHistorical ? 'active' : ''}"
         @click=${() => this.toggleHistorical()}
@@ -66,14 +66,14 @@ function renderWeekMarkers() {
   return html`
     <div class="week-markers">
       ${weeks.map(
-        (week) => html`
+    (week) => html`
           <div class="week-marker" style="left: ${(week / 46) * 100}%">
             ${week % 4 === 0
-              ? html`<span class="week-label">${week}</span>`
-              : html`<span class="week-tick">|</span>`}
+        ? html`<span class="week-label">${week}</span>`
+        : html`<span class="week-tick">|</span>`}
           </div>
         `
-      )}
+  )}
     </div>
   `;
 }
@@ -87,19 +87,19 @@ function renderTimeAxis(this: ObstetricTimeline) {
       <!-- Línea base del timeline -->
       <div class="timeline-line"></div>
 
-      <!-- Zona de puerperio (semanas 41-46) -->
+      <!-- Zona de Puerperi (semanas 41-46) -->
       <div class="puerperium-zone" style="left: ${(41 / 46) * 100}%; width: ${(5 / 46) * 100}%">
-        <span class="puerperium-label">Puerperio</span>
+        <span class="puerperium-label">Puerperi</span>
       </div>
 
       <!-- Línea vertical "Hoy" -->
       ${this.todayWeek >= 0 && this.todayWeek <= 46
-        ? html`
+      ? html`
             <div class="today-line" style="left: ${(this.todayWeek / 46) * 100}%">
               <span class="today-label">Hoy</span>
             </div>
           `
-        : ''}
+      : ''}
 
       <!-- Línea vertical "Parto previsto" en semana 40 -->
       <div class="expected-delivery-line" style="left: ${(40 / 46) * 100}%">
@@ -191,8 +191,8 @@ function renderOverlay(this: ObstetricTimeline) {
           style="
             --event-color: ${color};
             ${this.overlayPosition
-              ? `left: ${this.overlayPosition.x}px; top: ${this.overlayPosition.y}px;`
-              : ''}
+        ? `left: ${this.overlayPosition.x}px; top: ${this.overlayPosition.y}px;`
+        : ''}
           "
         >
           <button class="overlay-close" @click=${() => this.closeOverlay()}>×</button>
@@ -228,8 +228,8 @@ function renderOverlay(this: ObstetricTimeline) {
           @click=${(e: Event) => e.stopPropagation()}
           style="
             ${this.overlayPosition
-              ? `left: ${this.overlayPosition.x}px; top: ${this.overlayPosition.y}px;`
-              : ''}
+        ? `left: ${this.overlayPosition.x}px; top: ${this.overlayPosition.y}px;`
+        : ''}
           "
         >
           <button class="overlay-close" @click=${() => this.closeOverlay()}>×</button>
@@ -242,9 +242,9 @@ function renderOverlay(this: ObstetricTimeline) {
           <div class="overlay-content">
             <div class="event-list">
               ${group.events.map(
-                (event) => {
-                  const color = EVENT_COLORS[event.type];
-                  return html`
+          (event) => {
+            const color = EVENT_COLORS[event.type];
+            return html`
                     <div class="event-list-item" @click=${(e: MouseEvent) => this.handleEventClick(event, e)}>
                       <div class="event-list-marker" style="background-color: ${color}"></div>
                       <div class="event-list-content">
@@ -254,8 +254,8 @@ function renderOverlay(this: ObstetricTimeline) {
                       </div>
                     </div>
                   `;
-                }
-              )}
+          }
+        )}
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import * as Highcharts from 'highcharts';
 
-export type EventType = 'visita' | 'prueba' | 'urgencia' | 'ingreso' | 'parto' | 'puerperio';
+export type EventType = 'visita' | 'prueba' | 'urgencia' | 'ingreso' | 'parto' | 'puerperi';
 
 export interface ObstetricEvent {
   id: string;
@@ -19,7 +19,7 @@ export const EVENT_COLORS: Record<EventType, string> = {
   urgencia: 'rgba(255, 182, 193, 0.7)',
   ingreso: 'rgba(255, 218, 185, 0.7)',
   parto: 'rgba(255, 239, 153, 0.7)',
-  puerperio: 'rgba(221, 160, 221, 0.7)',
+  puerperi: 'rgba(221, 160, 221, 0.7)',
 };
 
 export const EVENT_LABELS: Record<EventType, string> = {
@@ -28,10 +28,10 @@ export const EVENT_LABELS: Record<EventType, string> = {
   urgencia: 'Urgencia',
   ingreso: 'Ingreso',
   parto: 'Parto',
-  puerperio: 'Puerperio',
+  puerperi: 'Puerperi',
 };
 
-const TYPE_ORDER: EventType[] = ['visita', 'prueba', 'urgencia', 'ingreso', 'parto', 'puerperio'];
+const TYPE_ORDER: EventType[] = ['visita', 'prueba', 'urgencia', 'ingreso', 'parto', 'puerperi'];
 
 export interface ChartDataResult {
   series: any[];
@@ -172,7 +172,7 @@ export function createChartConfig(options: CreateChartOptions): Highcharts.Optio
       lineColor: '#e1e8ed',
       tickColor: '#e1e8ed',
       title: {
-        text: 'Semanas de gestación',
+        text: 'Setmanes de gestació',
         style: { color: '#7b8a9a', fontSize: '13px', fontWeight: '600' },
       },
       labels: {
@@ -183,7 +183,7 @@ export function createChartConfig(options: CreateChartOptions): Highcharts.Optio
         to: 46,
         color: 'rgba(221, 160, 221, 0.2)',
         label: {
-          text: 'Puerperio',
+          text: 'Puerperi',
           align: 'center',
           verticalAlign: 'top',
           y: -10,
@@ -197,7 +197,7 @@ export function createChartConfig(options: CreateChartOptions): Highcharts.Optio
           width: 3,
           zIndex: 5,
           label: {
-            text: 'Hoy',
+            text: 'Avui',
             style: {
               color: '#fff',
               backgroundColor: 'rgba(135, 206, 250, 0.9)',
@@ -213,7 +213,7 @@ export function createChartConfig(options: CreateChartOptions): Highcharts.Optio
           width: 3,
           zIndex: 4,
           label: {
-            text: 'Parto previsto',
+            text: 'Part previst',
             style: {
               color: '#5a5a5a',
               backgroundColor: 'rgba(255, 239, 153, 0.95)',
@@ -252,8 +252,8 @@ export function createChartConfig(options: CreateChartOptions): Highcharts.Optio
                 ${this.series.name}
               </div>
               <div style="font-weight: 600; color: #2c3e50; margin-bottom: 4px;">${p.name}</div>
-              <div style="color: #7b8a9a; font-size: 12px; margin-bottom: 4px;"><strong>Inicio:</strong> Semana ${p.x} - ${p.date}</div>
-              <div style="color: #7b8a9a; font-size: 12px;"><strong>Fin:</strong> Semana ${p.x2} - ${p.endDate}</div>
+              <div style="color: #7b8a9a; font-size: 12px; margin-bottom: 4px;"><strong>Inici:</strong> Setmana ${p.x} - ${p.date}</div>
+              <div style="color: #7b8a9a; font-size: 12px;"><strong>Fi:</strong> Setmana ${p.x2} - ${p.endDate}</div>
             </div>
           `;
         }
@@ -269,9 +269,9 @@ export function createChartConfig(options: CreateChartOptions): Highcharts.Optio
           return `
             <div style="min-width: 220px; max-width: 300px;">
               <div style="background: ${p.marker.fillColor}; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; margin-bottom: 8px; text-transform: uppercase;">
-                ${this.series.name} - Semana ${p.x}
+                ${this.series.name} - Setmana ${p.x}
               </div>
-              <div style="font-weight: 600; color: #2c3e50; margin-bottom: 8px; font-size: 13px;">${p.count} eventos</div>
+              <div style="font-weight: 600; color: #2c3e50; margin-bottom: 8px; font-size: 13px;">${p.count} esdeveniments</div>
               <div style="max-height: 200px; overflow-y: auto;">${list}</div>
             </div>
           `;
@@ -283,7 +283,7 @@ export function createChartConfig(options: CreateChartOptions): Highcharts.Optio
               ${this.series.name}
             </div>
             <div style="font-weight: 600; color: #2c3e50; margin-bottom: 4px;">${p.name}</div>
-            <div style="color: #7b8a9a; font-size: 12px;">Semana ${p.x} - ${p.date}</div>
+            <div style="color: #7b8a9a; font-size: 12px;">Setmana ${p.x} - ${p.date}</div>
           </div>
         `;
       },

@@ -60,7 +60,7 @@ export class ObstetricTimelineHighcharts extends LitElement {
   get filteredEvents(): ObstetricEvent[] {
     const now = Date.now();
     return this.events.filter(event => {
-      const isAlwaysVisible = event.type === 'parto' || event.type === 'puerperio';
+      const isAlwaysVisible = event.type === 'parto' || event.type === 'puerperi';
       const typeMatch = isAlwaysVisible || this.activeFilters.has(event.type);
       const dateMatch = this.showHistorical || event.date.getTime() <= now;
       return typeMatch && dateMatch;

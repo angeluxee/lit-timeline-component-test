@@ -6,7 +6,7 @@ import stylesText from './styles.scss?inline';
 /**
  * Tipos de eventos obstétricos
  */
-export type EventType = 'visita' | 'prueba' | 'urgencia' | 'ingreso' | 'parto' | 'puerperio';
+export type EventType = 'visita' | 'prueba' | 'urgencia' | 'ingreso' | 'parto' | 'puerperi';
 
 /**
  * Interfaz para eventos obstétricos
@@ -38,7 +38,7 @@ export const EVENT_COLORS: Record<EventType, string> = {
   urgencia: '#F44336',    // Rojo
   ingreso: '#FF9800',     // Naranja
   parto: '#FFD700',       // Dorado
-  puerperio: '#CE93D8',   // Lila
+  puerperi: '#CE93D8',   // Lila
 };
 
 /**
@@ -50,7 +50,7 @@ export const EVENT_LABELS: Record<EventType, string> = {
   urgencia: 'Urgencia',
   ingreso: 'Ingreso',
   parto: 'Parto',
-  puerperio: 'Puerperio',
+  puerperi: 'Puerperi',
 };
 
 /**
@@ -76,7 +76,7 @@ export class ObstetricTimeline extends LitElement {
 
   // Estado interno
   @state()
-  private activeFilters: Set<EventType> = new Set(['visita', 'prueba', 'urgencia', 'ingreso', 'parto', 'puerperio']);
+  private activeFilters: Set<EventType> = new Set(['visita', 'prueba', 'urgencia', 'ingreso', 'parto', 'puerperi']);
 
   @state()
   private showHistorical: boolean = true;
