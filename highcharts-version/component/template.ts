@@ -34,7 +34,18 @@ export function template(this: ObstetricTimelineHighcharts) {
             `)}
           </div>
         </div>
-        <div id="chart-container" class="chart-container"></div>
+        <div id="chart-container" class="chart-container">
+          <div class="line-legend">
+            <div class="line-legend-item">
+              <span class="line-legend-marker" style="background-color: rgba(135, 206, 250, 0.8);"></span>
+              <span class="line-legend-label">Línia actual</span>
+            </div>
+            <div class="line-legend-item">
+              <span class="line-legend-marker" style="background-color: rgba(255, 239, 153, 0.9);"></span>
+              <span class="line-legend-label">Part previst</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Event overlay -->

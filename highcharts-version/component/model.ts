@@ -196,32 +196,12 @@ export function createChartConfig(options: CreateChartOptions): Highcharts.Optio
           color: 'rgba(135, 206, 250, 0.8)',
           width: 3,
           zIndex: 4,
-          label: {
-            text: 'Avui',
-            style: {
-              color: '#5a5a5a',
-              backgroundColor: 'rgba(135, 206, 250, 0.9)',
-              padding: '4px 8px',
-              borderRadius: '4px',
-              fontWeight: '600',
-            },
-          },
         },
         {
           value: 40,
           color: 'rgba(255, 239, 153, 0.9)',
           width: 3,
           zIndex: 4,
-          label: {
-            text: 'Part previst',
-            style: {
-              color: '#5a5a5a',
-              backgroundColor: 'rgba(255, 239, 153, 0.95)',
-              padding: '4px 8px',
-              borderRadius: '4px',
-              fontWeight: '600',
-            },
-          },
         },
       ],
     },
