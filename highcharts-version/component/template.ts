@@ -8,12 +8,20 @@ export function template(this: ObstetricTimelineHighcharts) {
     <div class="obstetric-timeline" @click=${() => this.closeOverlay()}>
       <!-- Header -->
       <div class="timeline-header">
-        <h1 class="timeline-title">
-          Embarazo actual
-          <span class="timeline-dates">
-            (inicio: ${this.formatDate(this.startDate)} – parto previsto: ${this.formatDate(this.expectedDeliveryDate)})
-          </span>
-        </h1>
+        <h1 class="timeline-title">Embaràs actual</h1>
+        <div class="timeline-info">
+          <div class="info-item">
+            <span class="info-label">DUR</span>
+            <span class="info-value">${this.formatDate(this.startDate)}</span>
+            <span class="info-description">Data última regla</span>
+          </div>
+          <div class="info-separator">•</div>
+          <div class="info-item">
+            <span class="info-label">DPP</span>
+            <span class="info-value">${this.formatDate(this.expectedDeliveryDate)}</span>
+            <span class="info-description">Data prevista part</span>
+          </div>
+        </div>
       </div>
 
       <!-- Chart with legend -->
