@@ -22,19 +22,34 @@ export function template(this: ObstetricTimelineHighcharts) {
               <span class="info-description">Data prevista part</span>
             </div>
           </div>
-          <div class="legend-container">
-            ${CLINICAL_TYPES.map(type => html`
-              <div
-                class="legend-item ${this.activeFilters.has(type) ? 'active' : 'inactive'}"
-                @click=${() => this.toggleFilter(type)}
-              >
-                <span class="legend-marker" style="background-color: ${EVENT_COLORS[type]}"></span>
-                <span class="legend-label">${EVENT_LABELS[type]}</span>
+          <div class="legends-group">
+            <div class="line-legend">
+              <div class="line-legend-item">
+                <span class="line-legend-marker" style="background-color: rgba(135, 206, 250, 0.8);"></span>
+                <span class="line-legend-label">Línia actual</span>
               </div>
-            `)}
+              <div class="line-legend-item">
+                <span class="line-legend-marker" style="background-color: rgba(255, 239, 153, 0.9);"></span>
+                <span class="line-legend-label">Part previst</span>
+              </div>
+            </div>
+            <div class="legend-separator"></div>
+            <div class="legend-container">
+              ${CLINICAL_TYPES.map(type => html`
+                <div
+                  class="legend-item ${this.activeFilters.has(type) ? 'active' : 'inactive'}"
+                  @click=${() => this.toggleFilter(type)}
+                >
+                  <span class="legend-marker" style="background-color: ${EVENT_COLORS[type]}"></span>
+                  <span class="legend-label">${EVENT_LABELS[type]}</span>
+                </div>
+              `)}
+            </div>
           </div>
         </div>
-        <div id="chart-container" class="chart-container"></div>
+        <div class="chart-area">
+          <div id="chart-container" class="chart-container"></div>
+        </div>
       </div>
 
       <!-- Event overlay -->
