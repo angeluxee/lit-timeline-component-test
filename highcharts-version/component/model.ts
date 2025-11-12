@@ -24,10 +24,10 @@ export const EVENT_COLORS: Record<EventType, string> = {
 
 export const EVENT_LABELS: Record<EventType, string> = {
   visita: 'Visita',
-  prueba: 'Prueba',
-  urgencia: 'Urgencia',
-  ingreso: 'Ingreso',
-  parto: 'Parto',
+  prueba: 'Prova',
+  urgencia: 'Urgència',
+  ingreso: 'Ingrés',
+  parto: 'Part',
   puerperi: 'Puerperi',
 };
 
