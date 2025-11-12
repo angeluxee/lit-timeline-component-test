@@ -79,7 +79,7 @@ export class ObstetricTimelineHighcharts extends LitElement {
   }
 
   formatDate(date: Date): string {
-    return date.toLocaleDateString('es-ES', {
+    return date.toLocaleDateString('ca-ES', {
       day: '2-digit',
       month: 'short',
       year: 'numeric',
