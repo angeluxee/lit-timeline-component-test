@@ -198,6 +198,9 @@ export function createChartConfig(options: CreateChartOptions): Highcharts.Optio
           zIndex: 5,
           label: {
             text: `Avui · Setmana ${todayWeek}`,
+            align: 'center',
+            verticalAlign: 'bottom',
+            y: -10,
             style: {
               color: '#fff',
               backgroundColor: 'rgba(135, 206, 250, 0.9)',
