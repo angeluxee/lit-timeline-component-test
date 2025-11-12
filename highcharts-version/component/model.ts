@@ -1,6 +1,6 @@
 import * as Highcharts from 'highcharts';
 
-export type EventType = 'visita' | 'prueba' | 'urgencia' | 'ingreso' | 'parto' | 'puerperio';
+export type EventType = 'visita' | 'prueba' | 'urgencia' | 'ingreso' | 'parto' | 'puerperi';
 
 export interface ObstetricEvent {
   id: string;
@@ -19,7 +19,7 @@ export const EVENT_COLORS: Record<EventType, string> = {
   urgencia: 'rgba(255, 182, 193, 0.7)',
   ingreso: 'rgba(255, 218, 185, 0.7)',
   parto: 'rgba(255, 239, 153, 0.7)',
-  puerperio: 'rgba(221, 160, 221, 0.7)',
+  puerperi: 'rgba(221, 160, 221, 0.7)',
 };
 
 export const EVENT_LABELS: Record<EventType, string> = {
@@ -28,10 +28,10 @@ export const EVENT_LABELS: Record<EventType, string> = {
   urgencia: 'Urgencia',
   ingreso: 'Ingreso',
   parto: 'Parto',
-  puerperio: 'Puerperio',
+  puerperi: 'Puerperi',
 };
 
-const TYPE_ORDER: EventType[] = ['visita', 'prueba', 'urgencia', 'ingreso', 'parto', 'puerperio'];
+const TYPE_ORDER: EventType[] = ['visita', 'prueba', 'urgencia', 'ingreso', 'parto', 'puerperi'];
 
 export interface ChartDataResult {
   series: any[];
@@ -183,7 +183,7 @@ export function createChartConfig(options: CreateChartOptions): Highcharts.Optio
         to: 46,
         color: 'rgba(221, 160, 221, 0.2)',
         label: {
-          text: 'Puerperio',
+          text: 'Puerperi',
           align: 'center',
           verticalAlign: 'top',
           y: -10,
